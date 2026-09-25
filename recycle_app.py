@@ -70,7 +70,7 @@ def load_keras_model():
 model = load_keras_model()
 
 # 3. Streamlit UI Design
-st.title("♻️ Plastic Type Classifier & Recycling Ideas")
+st.title("♻️ ReCycle_App")
 st.write("Upload an image of a plastic item to predict its type and get recycling ideas.")
 
 uploaded_file = st.file_uploader(
