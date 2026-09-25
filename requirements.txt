@@ -1,0 +1,4 @@
+tenserflow
+streamlit
+numpy
+Pillow
