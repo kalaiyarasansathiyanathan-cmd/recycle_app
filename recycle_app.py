@@ -5,16 +5,14 @@ from PIL import Image
 import tensorflow as tf
 import streamlit as st
 
-# 1. Page Configuration & Setup
 st.set_page_config(
-    page_title="Plastic Classification & Recycling",
+    page_title="Recycling_App",
     page_icon="♻️",
     layout="centered"
 )
 
-MODEL_PATH = r"C:\Users\sjsrg\plastic_classifier_model.keras"
+MODEL_PATH = "plastic_classifier_model.keras"
 
-# Full names mapping
 plastic_full_names = {
     "PET": "PET (Polyethylene Terephthalate)",
     "HDPE": "HDPE (High-Density Polyethylene)",
@@ -26,7 +24,6 @@ plastic_full_names = {
 
 class_names = ["HDPE", "LDPE", "PET", "PP", "PS", "PVC"]
 
-# Detailed sentence-based recycling ideas in English
 recycling_ideas = {
     "PET": [
         "You can upcycle this bottle into a self-watering planter by cutting it in half and adding a cotton wick.",
@@ -58,7 +55,6 @@ recycling_ideas = {
     ]
 }
 
-# 2. Cache & Load Model
 @st.cache_resource
 def load_keras_model():
     if os.path.exists(MODEL_PATH):
@@ -69,39 +65,37 @@ def load_keras_model():
 
 model = load_keras_model()
 
-# 3. Streamlit UI Design
-st.title("♻️ ReCycle_App")
-st.write("Upload an image of a plastic item to predict its type and get recycling ideas.")
+st.title("♻️ ReCycle")
+st.write("Upload or capture an image of a plastic item to predict its type and get recycling ideas.")
 
 uploaded_file = st.file_uploader(
     "Choose a plastic image...", 
     type=["jpg", "jpeg", "png", "bmp"]
 )
 
-if uploaded_file is not None and model is not None:
-    # Display the uploaded image
-    image = Image.open(uploaded_file).convert('RGB')
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+camera_file = st.camera_input("Or take a photo using your camera")
+
+input_image_file = camera_file if camera_file is not None else uploaded_file
+
+if input_image_file is not None and model is not None:
+    image = Image.open(input_image_file).convert('RGB')
+    st.image(image, caption="Selected Image", use_container_width=True)
     
     with st.spinner("Classifying plastic type..."):
         try:
-            # Image Preprocessing
             img_resized = image.resize((224, 224))
             img_array = np.array(img_resized, dtype=np.float32)
             img_array = np.expand_dims(img_array, axis=0)
 
-            # Model Prediction
             predictions = model.predict(img_array)
             predicted_idx = np.argmax(predictions[0])
             predicted_short = class_names[predicted_idx]
             predicted_full = plastic_full_names.get(predicted_short, predicted_short)
             confidence = float(np.max(predictions[0])) * 100
 
-            # Display Results
             st.success(f"**Predicted Plastic Type:** {predicted_full}")
             st.info(f"**Confidence:** {confidence:.2f}%")
 
-            # Display Recycling Suggestions
             st.subheader(f"💡 Real-Time Recycling Ideas for {predicted_full}:")
             suggestions = recycling_ideas.get(predicted_short, ["No suggestions found."])
             
