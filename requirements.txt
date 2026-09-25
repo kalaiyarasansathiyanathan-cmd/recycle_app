@@ -1,4 +1,4 @@
 tenserflow
 streamlit
 numpy
-Pillow
+pillow
