@@ -12,15 +12,9 @@ st.set_page_config(
         'Get Help': None,
         'Report a bug': None,
         'About': '''
-        <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
+        <meta name="google-site-verification" content="7QcAzq0PmjFkL7r0lwBMQCVZgB6NMKBasyZsE_G7xKI" />
         '''
     }
-)
-
-st.set_page_config(
-    page_title="Recycling_App",
-    page_icon="♻️",
-    layout="centered"
 )
 
 MODEL_PATH = "plastic_classifier_model.keras"
