@@ -6,6 +6,18 @@ import tensorflow as tf
 import streamlit as st
 
 st.set_page_config(
+    page_title="ReCycle App",
+    page_icon="♻️",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': '''
+        <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
+        '''
+    }
+)
+
+st.set_page_config(
     page_title="Recycling_App",
     page_icon="♻️",
     layout="centered"
